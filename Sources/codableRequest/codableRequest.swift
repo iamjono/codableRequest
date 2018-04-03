@@ -44,12 +44,13 @@ public struct CodableRequest {
 		_ url: String,
 		to responseType: T.Type,
 		error errorType: E.Type,
+		json: [String: Any] = [String: Any](),
 		params: [String: Any] = [String: Any](),
 		encoding: String = "json",
 		bearerToken: String = "") throws -> T {
 
 		var curlObject = CURLRequest(url, options: [CURLRequest.Option.httpMethod(method)])
-		if !params.isEmpty, encoding == "json" {
+		if !json.isEmpty {
 			var byteArray = [UInt8]()
 			do {
 				byteArray = [UInt8](try params.jsonEncodedString().utf8)
