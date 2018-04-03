@@ -71,9 +71,9 @@ public struct CodableRequest {
 			curlObject.addHeader(.authorization, value: "Bearer \(bearerToken)")
 		}
 
-		if method == .post, encoding == "json" {
+		if encoding == "json" {
 			curlObject.addHeader(.contentType, value: "application/json")
-		} else if method == .post {
+		} else {
 			curlObject.addHeader(.contentType, value: "application/x-www-form-urlencoded")
 		}
 
