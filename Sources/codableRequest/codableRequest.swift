@@ -13,7 +13,7 @@ import PerfectCURL
 import cURL
 import PerfectHTTP
 
-protocol ErrorResponseProtocol: Codable, Error {}
+public protocol ErrorResponseProtocol: Codable, Error {}
 
 public struct ErrorResponse: ErrorResponseProtocol {
 	public var error: ErrorMsg?
