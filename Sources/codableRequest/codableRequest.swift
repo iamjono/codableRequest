@@ -85,7 +85,7 @@ public struct CodableRequest {
 //			print(response.url)
 //			print(response.bodyString)
 
-			if response.responseCode > 400 {
+			if response.responseCode >= 400 {
 				do {
 					let e = try response.bodyJSON(errorType)
 					throw e
