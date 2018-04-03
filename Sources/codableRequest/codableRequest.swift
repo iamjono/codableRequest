@@ -39,7 +39,7 @@ public struct CodableRequest {
 	/// Usage:
 	/// let r : HTTPbin = try CodableRequest.request(.post, "https://httpbin.org/get", to: HTTPbin.self, error: ErrorResponse.self)
 
-	static func request<T: Codable, E: ErrorResponseProtocol>(
+	public static func request<T: Codable, E: ErrorResponseProtocol>(
 		_ method: HTTPMethod,
 		_ url: String,
 		to responseType: T.Type,
