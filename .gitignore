@@ -3,3 +3,8 @@
 /Packages
 /*.xcodeproj
 Package.resolved
+Package.pins
+PADockerfile_build
+.build_lin
+.package_lin.pins
+.package_lin.resolved
