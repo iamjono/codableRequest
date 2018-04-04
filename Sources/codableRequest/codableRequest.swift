@@ -53,7 +53,7 @@ public struct CodableRequest {
 		if !json.isEmpty {
 			var byteArray = [UInt8]()
 			do {
-				byteArray = [UInt8](try params.jsonEncodedString().utf8)
+				byteArray = [UInt8](try json.jsonEncodedString().utf8)
 			} catch {
 				throw error
 			}
