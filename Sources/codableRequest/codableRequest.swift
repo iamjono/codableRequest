@@ -44,25 +44,36 @@ public struct CodableRequest {
 		_ url: String,
 		to responseType: T.Type,
 		error errorType: E.Type,
+		body: String = "",
 		json: [String: Any] = [String: Any](),
 		params: [String: Any] = [String: Any](),
 		encoding: String = "json",
 		bearerToken: String = "") throws -> T {
 
 		var curlObject = CURLRequest(url, options: [CURLRequest.Option.httpMethod(method)])
-		if !json.isEmpty {
-			var byteArray = [UInt8]()
+		var byteArray = [UInt8]()
+
+		if !body.isEmpty {
+			print(body.utf8)
+			byteArray = [UInt8](body.utf8)
+		} else if !json.isEmpty {
 			do {
+				print(try json.jsonEncodedString().utf8)
 				byteArray = [UInt8](try json.jsonEncodedString().utf8)
 			} catch {
 				throw error
 			}
-			curlObject = CURLRequest(url, CURLRequest.Option.httpMethod(method), .postData(byteArray))
 		} else if !params.isEmpty {
-			var byteArray = [UInt8]()
 			byteArray = [UInt8]((self.toParams(params).joined(separator: "&")).utf8)
-			curlObject = CURLRequest(url, CURLRequest.Option.httpMethod(method), .postData(byteArray))
 		}
+
+
+		if method == .post || method == .put || method == .patch {
+			curlObject = CURLRequest(url, CURLRequest.Option.httpMethod(method), .postData(byteArray))
+		} else {
+			curlObject = CURLRequest(url, CURLRequest.Option.httpMethod(method))
+		}
+
 
 		curlObject.addHeader(.accept, value: "application/json")
 		curlObject.addHeader(.cacheControl, value: "no-cache")
@@ -81,10 +92,10 @@ public struct CodableRequest {
 		do {
 			let response = try curlObject.perform()
 			// For debug:
-//			print("response.responseCode:")
-//			print(response.responseCode)
-//			print(response.url)
-//			print(response.bodyString)
+			//			print("response.responseCode:")
+			//			print(response.responseCode)
+			//			print(response.url)
+			//			print(response.bodyString)
 
 			if response.responseCode >= 400 {
 				do {
@@ -107,7 +118,6 @@ public struct CodableRequest {
 			throw error
 		}
 	}
-
 
 	private static func toParams(_ params:[String: Any]) -> [String] {
 		var str = [String]()
